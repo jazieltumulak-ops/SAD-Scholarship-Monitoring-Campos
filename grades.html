@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>ScholarTrack | Grade Submissions</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+</head>
+
+<body>
+
+<div id="app"></div>
+
+
+<div
+    id="gradeModal"
+    class="modal-overlay"
+>
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h3>
+                Submit Semester Grades
+            </h3>
+
+            <button
+                type="button"
+                class="modal-close"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="gradeForm">
+
+            <div class="modal-body">
+
+                <div class="form-grid">
+
+                    <div class="form-group full">
+
+                        <label>
+                            Scholar *
+                        </label>
+
+                        <select
+                            id="gradeScholar"
+                            required
+                        >
+
+                            <option value="">
+                                Select scholar
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Academic Year *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="academicYear"
+                            placeholder="2026-2027"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Semester *
+                        </label>
+
+                        <select
+                            id="semester"
+                            required
+                        >
+
+                            <option value="">
+                                Select semester
+                            </option>
+
+                            <option value="1st Semester">
+                                1st Semester
+                            </option>
+
+                            <option value="2nd Semester">
+                                2nd Semester
+                            </option>
+
+                            <option value="Summer">
+                                Summer
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            GWA *
+                        </label>
+
+                        <input
+                            type="number"
+                            id="gwa"
+                            min="1"
+                            max="5"
+                            step="0.01"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Units Enrolled *
+                        </label>
+
+                        <input
+                            type="number"
+                            id="unitsEnrolled"
+                            min="0"
+                            step="1"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Failed Subjects
+                        </label>
+
+                        <input
+                            type="number"
+                            id="failedSubjects"
+                            min="0"
+                            value="0"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Incomplete Subjects
+                        </label>
+
+                        <input
+                            type="number"
+                            id="incompleteSubjects"
+                            min="0"
+                            value="0"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary modal-close"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    Submit Grades
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script
+    type="module"
+    src="js/grades.js"
+></script>
+
+</body>
+</html>

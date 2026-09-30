@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>ScholarTrack | Scholars</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+</head>
+
+<body>
+
+<div id="app"></div>
+
+<div
+    id="scholarModal"
+    class="modal-overlay"
+>
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h3 id="scholarModalTitle">
+                Register Scholar
+            </h3>
+
+            <button
+                class="modal-close"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="scholarForm">
+
+            <div class="modal-body">
+
+                <input
+                    type="hidden"
+                    id="scholarId"
+                >
+
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label>
+                            Student ID *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="studentId"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Full Name *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="fullName"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Degree Program *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="degreeProgram"
+                            placeholder="e.g. BSIT"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Year Level *
+                        </label>
+
+                        <select
+                            id="yearLevel"
+                            required
+                        >
+
+                            <option value="">
+                                Select year
+                            </option>
+
+                            <option value="1">
+                                1st Year
+                            </option>
+
+                            <option value="2">
+                                2nd Year
+                            </option>
+
+                            <option value="3">
+                                3rd Year
+                            </option>
+
+                            <option value="4">
+                                4th Year
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Scholarship Program *
+                        </label>
+
+                        <select
+                            id="scholarshipId"
+                            required
+                        >
+
+                            <option value="">
+                                Select scholarship
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Status
+                        </label>
+
+                        <select id="status">
+
+                            <option>
+                                Active
+                            </option>
+
+                            <option>
+                                Pending Submission
+                            </option>
+
+                            <option>
+                                For Verification
+                            </option>
+
+                            <option>
+                                Compliant
+                            </option>
+
+                            <option>
+                                With Deficiency
+                            </option>
+
+                            <option>
+                                Probationary
+                            </option>
+
+                            <option>
+                                For Renewal
+                            </option>
+
+                            <option>
+                                Renewed
+                            </option>
+
+                            <option>
+                                Disqualified
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary modal-close"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    Save Scholar
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script
+    type="module"
+    src="js/scholars.js"
+></script>
+
+</body>
+</html>

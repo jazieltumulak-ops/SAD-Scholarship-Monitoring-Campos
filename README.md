@@ -31,7 +31,7 @@ The Scholarship Monitoring System provides a centralized way for scholarship per
 Demo Account
 
 Email: admin@adssu.edu.ph
-Password: Contact the system administrator
+Password:admin123
 
 
 

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | ScholarTrack</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="login-page">
+
+    <!-- Background decoration -->
+    <div class="login-decoration decoration-one"></div>
+    <div class="login-decoration decoration-two"></div>
+
+    <main class="login-wrapper">
+
+        <section class="login-card">
+
+            <!-- Logo -->
+            <div class="login-logo">
+                <div class="logo-icon">
+                    🎓
+                </div>
+            </div>
+
+            <!-- Heading -->
+            <div class="login-heading">
+                <span class="system-label">SCHOLARSHIP OFFICE</span>
+
+                <h1>ScholarTrack</h1>
+
+                <p>
+                    Student Scholarship Monitoring and
+                    Academic Compliance System
+                </p>
+            </div>
+
+
+            <!-- Login Form -->
+            <form id="loginForm" class="login-form">
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            ✉
+                        </span>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            🔒
+                        </span>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            id="togglePassword"
+                            class="password-toggle"
+                            aria-label="Show password"
+                        >
+                            👁
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    id="loginButton"
+                    class="login-button"
+                >
+                    <span id="loginButtonText">
+                        Sign In
+                    </span>
+
+                    <span
+                        id="loginSpinner"
+                        class="button-spinner hidden"
+                    ></span>
+                </button>
+
+
+                <div
+                    id="loginMessage"
+                    class="login-message"
+                ></div>
+
+            </form>
+
+
+            <!-- Footer -->
+            <div class="login-footer">
+
+                <div class="security-note">
+                    <span>🔐</span>
+
+                    <span>
+                        Secure access for authorized users
+                    </span>
+                </div>
+
+                <p>
+                    Scholarship Monitoring System
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script type="module" src="js/auth.js"></script>
+
+</body>
+</html>

@@ -27,6 +27,14 @@ The system is designed to help scholarship personnel manage scholars, scholarshi
 
 The Scholarship Monitoring System provides a centralized way for scholarship personnel to monitor student scholars and their academic compliance.
 
+
+Demo Account
+
+Email: admin@adssu.edu.ph
+Password: Contact the system administrator
+
+
+
 The system supports the following core process:
 
 ```text
@@ -41,3 +49,4 @@ Grade Verification
 Compliance Evaluation
         ↓
 Scholar Status Monitoring
+

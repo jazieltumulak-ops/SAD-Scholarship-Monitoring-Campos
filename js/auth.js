@@ -1,402 +1,282 @@
-// =========================================================
-// SCHOLARTRACK
-// Authentication System
-// =========================================================
+import { supabase } from "./supabase.js";
 
-import {
-    supabase
-} from "./supabase.js";
+const loginForm = document.getElementById("loginForm");
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const loginButton = document.getElementById("loginButton");
+const togglePassword = document.getElementById("togglePassword");
 
-
-// =========================================================
-// ELEMENTS
-// =========================================================
-
-const loginForm =
-    document.getElementById("loginForm");
-
-const loginMessage =
-    document.getElementById("loginMessage");
-
-const loginButton =
-    document.getElementById("loginButton");
-
-const loginButtonText =
-    document.getElementById("loginButtonText");
-
-const loginSpinner =
-    document.getElementById("loginSpinner");
-
-const togglePassword =
-    document.getElementById("togglePassword");
-
-const passwordInput =
-    document.getElementById("password");
+const errorMessage = document.getElementById("errorMessage");
+const successMessage = document.getElementById("successMessage");
 
 
-// =========================================================
-// CHECK EXISTING SESSION
-// =========================================================
+// ===============================
+// SHOW MESSAGE
+// ===============================
+
+function showError(message) {
+    if (errorMessage) {
+        errorMessage.textContent = message;
+        errorMessage.style.display = "block";
+    }
+
+    if (successMessage) {
+        successMessage.style.display = "none";
+    }
+}
+
+function showSuccess(message) {
+    if (successMessage) {
+        successMessage.textContent = message;
+        successMessage.style.display = "block";
+    }
+
+    if (errorMessage) {
+        errorMessage.style.display = "none";
+    }
+}
+
+
+// ===============================
+// CHECK EXISTING LOGIN SESSION
+// ===============================
 
 async function checkExistingSession() {
 
     try {
 
         const {
-            data,
+            data: { session },
             error
         } = await supabase.auth.getSession();
 
-
         if (error) {
-
-            console.error(error);
-
+            console.error("Session error:", error);
             return;
         }
 
-
-        if (data.session) {
-
-            window.location.href =
-                "index.html";
+        if (session) {
+            window.location.href = "./index.html";
         }
 
     } catch (error) {
 
-        console.error(
-            "Session check error:",
-            error
-        );
+        console.error("Session check failed:", error);
 
     }
-
 }
 
 
-checkExistingSession();
-
-
-// =========================================================
+// ===============================
 // SHOW / HIDE PASSWORD
-// =========================================================
+// ===============================
 
 if (togglePassword) {
 
-    togglePassword.addEventListener(
-        "click",
-        function() {
+    togglePassword.addEventListener("click", () => {
 
-            if (
-                passwordInput.type ===
-                "password"
-            ) {
+        if (passwordInput.type === "password") {
 
-                passwordInput.type =
-                    "text";
+            passwordInput.type = "text";
+            togglePassword.textContent = "🙈";
+            togglePassword.setAttribute(
+                "aria-label",
+                "Hide password"
+            );
 
-                togglePassword.textContent =
-                    "🙈";
+        } else {
 
-            } else {
-
-                passwordInput.type =
-                    "password";
-
-                togglePassword.textContent =
-                    "👁";
-            }
+            passwordInput.type = "password";
+            togglePassword.textContent = "👁";
+            togglePassword.setAttribute(
+                "aria-label",
+                "Show password"
+            );
 
         }
-    );
+
+    });
 
 }
 
 
-// =========================================================
-// LOGIN FORM
-// =========================================================
+// ===============================
+// LOGIN
+// ===============================
 
 if (loginForm) {
 
-    loginForm.addEventListener(
-        "submit",
-        async function(event) {
+    loginForm.addEventListener("submit", async (event) => {
 
-            event.preventDefault();
+        event.preventDefault();
+
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+
+        if (!email || !password) {
+
+            showError("Please enter your email and password.");
+            return;
+
+        }
+
+        // Disable button while logging in
+        loginButton.disabled = true;
+        loginButton.textContent = "Signing in...";
+
+        if (errorMessage) {
+            errorMessage.style.display = "none";
+        }
+
+        if (successMessage) {
+            successMessage.style.display = "none";
+        }
 
 
-            const email =
-                document
-                    .getElementById("email")
-                    .value
-                    .trim();
+        try {
+
+            console.log("Attempting Supabase login...");
+
+            const {
+                data,
+                error
+            } = await supabase.auth.signInWithPassword({
+                email: email,
+                password: password
+            });
 
 
-            const password =
-                passwordInput.value;
+            // LOGIN ERROR
+            if (error) {
+
+                console.error("Supabase login error:", error);
+
+                showError(error.message);
+
+                loginButton.disabled = false;
+                loginButton.textContent = "Sign In";
+
+                return;
+            }
 
 
-            // -------------------------------------------------
-            // RESET MESSAGE
-            // -------------------------------------------------
+            // NO USER RETURNED
+            if (!data || !data.user) {
 
-            loginMessage.textContent = "";
+                showError(
+                    "Login failed. No user account was returned."
+                );
 
-            loginMessage.className =
-                "login-message";
+                loginButton.disabled = false;
+                loginButton.textContent = "Sign In";
+
+                return;
+            }
 
 
-            // -------------------------------------------------
-            // BUTTON LOADING
-            // -------------------------------------------------
+            // LOGIN SUCCESS
+            console.log("Login successful:", data.user.email);
 
-            loginButton.disabled = true;
+            showSuccess("Login successful. Opening dashboard...");
 
-            loginButtonText.textContent =
-                "Signing in...";
+            // Save basic user information
+            localStorage.setItem(
+                "userId",
+                data.user.id
+            );
 
-            loginSpinner.classList.remove(
-                "hidden"
+            localStorage.setItem(
+                "userEmail",
+                data.user.email
             );
 
 
+            // Try to get profile information
             try {
-
-                // ---------------------------------------------
-                // SUPABASE AUTHENTICATION
-                // ---------------------------------------------
-
-                const {
-                    data,
-                    error
-                } =
-                    await supabase.auth
-                        .signInWithPassword({
-
-                            email: email,
-
-                            password: password
-
-                        });
-
-
-                if (error) {
-
-                    throw error;
-                }
-
-
-                if (!data.user) {
-
-                    throw new Error(
-                        "Unable to authenticate your account."
-                    );
-
-                }
-
-
-                // ---------------------------------------------
-                // GET PROFILE
-                // ---------------------------------------------
 
                 const {
                     data: profile,
                     error: profileError
-                } =
-                    await supabase
-                        .from("profiles")
-                        .select(
-                            "id, full_name, role"
-                        )
-                        .eq(
-                            "id",
-                            data.user.id
-                        )
-                        .single();
+                } = await supabase
+                    .from("profiles")
+                    .select("id, full_name, role")
+                    .eq("id", data.user.id)
+                    .maybeSingle();
 
 
-                if (profileError) {
+                if (!profileError && profile) {
 
-                    throw new Error(
-                        "Your account profile was not found."
+                    localStorage.setItem(
+                        "userName",
+                        profile.full_name || data.user.email
+                    );
+
+                    localStorage.setItem(
+                        "userRole",
+                        profile.role || ""
+                    );
+
+                    console.log("Profile loaded:", profile);
+
+                } else {
+
+                    console.warn(
+                        "Profile not found or profile query blocked:",
+                        profileError
+                    );
+
+                    // Still continue to dashboard
+                    localStorage.setItem(
+                        "userName",
+                        data.user.email
                     );
 
                 }
 
+            } catch (profileError) {
 
-                if (!profile) {
-
-                    throw new Error(
-                        "No profile record exists for this account."
-                    );
-
-                }
-
-
-                // ---------------------------------------------
-                // CHECK VALID ROLE
-                // ---------------------------------------------
-
-                const validRoles = [
-                    "admin",
-                    "staff",
-                    "scholar"
-                ];
-
-
-                if (
-                    !validRoles.includes(
-                        profile.role
-                    )
-                ) {
-
-                    await supabase.auth
-                        .signOut();
-
-
-                    throw new Error(
-                        "Your account does not have a valid system role."
-                    );
-
-                }
-
-
-                // ---------------------------------------------
-                // SAVE SESSION INFORMATION
-                // ---------------------------------------------
-
-                localStorage.setItem(
-                    "userId",
-                    profile.id
+                console.warn(
+                    "Could not load profile:",
+                    profileError
                 );
 
-
+                // Still allow dashboard after successful authentication
                 localStorage.setItem(
                     "userName",
-                    profile.full_name ||
-                    "User"
-                );
-
-
-                localStorage.setItem(
-                    "userRole",
-                    profile.role
-                );
-
-
-                // ---------------------------------------------
-                // SUCCESS MESSAGE
-                // ---------------------------------------------
-
-                loginMessage.textContent =
-                    "Login successful. Opening dashboard...";
-
-                loginMessage.className =
-                    "login-message success";
-
-
-                // ---------------------------------------------
-                // REDIRECT
-                // ---------------------------------------------
-
-                setTimeout(
-                    function() {
-
-                        window.location.href =
-                            "index.html";
-
-                    },
-                    500
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    "Login error:",
-                    error
-                );
-
-
-                loginMessage.textContent =
-                    getFriendlyErrorMessage(
-                        error
-                    );
-
-
-                loginMessage.className =
-                    "login-message error";
-
-
-                loginButton.disabled =
-                    false;
-
-
-                loginButtonText.textContent =
-                    "Sign In";
-
-
-                loginSpinner.classList.add(
-                    "hidden"
+                    data.user.email
                 );
 
             }
 
+
+            // ===============================
+            // REDIRECT TO DASHBOARD
+            // ===============================
+
+            setTimeout(() => {
+
+                window.location.href = "./index.html";
+
+            }, 500);
+
+
+        } catch (error) {
+
+            console.error("Unexpected login error:", error);
+
+            showError(
+                "Something went wrong while signing in. Please try again."
+            );
+
+            loginButton.disabled = false;
+            loginButton.textContent = "Sign In";
+
         }
-    );
+
+    });
 
 }
 
 
-// =========================================================
-// FRIENDLY ERROR MESSAGES
-// =========================================================
-
-function getFriendlyErrorMessage(
-    error
-) {
-
-    const message =
-        error?.message || "";
-
-
-    if (
-        message
-            .toLowerCase()
-            .includes("invalid login credentials")
-    ) {
-
-        return "Incorrect email or password.";
-
-    }
-
-
-    if (
-        message
-            .toLowerCase()
-            .includes("email not confirmed")
-    ) {
-
-        return "Please confirm your email address first.";
-
-    }
-
-
-    if (
-        message
-            .toLowerCase()
-            .includes("profile was not found")
-    ) {
-
-        return "Your account profile is not configured.";
-
-    }
-
-
-    return (
-        message ||
-        "Unable to sign in. Please try again."
-    );
-
-}
+// Run session check
+checkExistingSession();
